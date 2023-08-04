@@ -1,70 +1,44 @@
-# Getting Started with Create React App
+# Talkie
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+[Demo](https://talkie.mlodzianoski.com)
+
+This is a toy for my kids (ages 5yo and 3yo). There is a list of words, when you press on the word you hear a voice saying the word. You can build sentences and play them back.
+
+This is a PWA (Progressive Web App). It works on the web and can be installed on a mobile device.
+
+
+
+
+
+## How to Play
+0. Play it here: [talkie.mlodzianoski.com](https://talkie.mlodzianoski.com)
+1. Click a voice (Julia, Stella, etc).
+2. There is a list of words. Click a word to hear that voice say it.
+3. Record a sentence:
+4. Tab "Begin Recording"
+5. Tap words, you'll see the sentence being built.
+6. Tab "Play" and you'll hear the sentence you built!
+
+
+## Screenshot
+![Talkie](talkie-02.png "Talkie")
+
+
+
+
+
+
 
 ## Available Scripts
 
-In the project directory, you can run:
-
 ### `npm start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
-
 ### `npm test`
+### `npm build`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Bugs
+1. There is a styling bug on the action buttons for Safari after install.
+2. Sounds sometimes unregister. Reproduce: on iphone, on installed PWA, open the app. Click sounds, they work. Then switch away from app. Switch back to app. Click a sound, it does not play.
 
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## Future Features
+1. Add "Favorites" functionality for sentences. Include a star icon, tapping it will save it locally. Include a star tab with the voices; this tab will list all saved sentences.
+2. Add more words.

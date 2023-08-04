@@ -1,0 +1,178 @@
+:root {
+  --main-text-color: #354390;
+}
+
+body {
+  color: #354390;
+}
+.Talkie {
+  padding: 10px;
+}
+
+h1 {
+  text-align: center;
+  font-size: 3em;
+}
+
+.SoundButton {
+  padding: 0.6em 1em;
+  margin: 10px 0px 0px 10px;
+  background-color: #ff8;
+  color: #354390;
+  font-weight: 800;
+  border: 1px solid #354390;
+  border-radius: 10px;
+  text-transform: capitalize;
+}
+.SoundButton[disabled] {
+  _color: #555;
+  _border-color: black;
+}
+.SoundButton.julia {
+  background-color: #afa;
+}
+.SoundButton.stella {
+  background-color: #faf;
+}
+.SoundButton.steve {
+  background-color: #aff;
+}
+
+
+
+
+.recording-wrapper {
+  background-color: #fff;
+  _min-height: 150px;
+  border: 1px solid black;
+  border-radius: 10px;
+  gap: 10px;
+  padding: 10px;
+
+  .recording {
+    margin-bottom: 10px;
+    min-height: 60px;
+  }
+  .clear {
+    display: none;
+  }
+
+  .recording-buttons {
+    min-height: 40px;
+    .play,
+    .stop {
+    }
+    .exit {
+      float: right;
+    }
+  }
+
+  .backspace,
+  .exit,
+  .stop,
+  .play {
+    font-size: 20px;
+  }
+  .exit {
+    border: 0px;
+    background-color: white;
+    margin: 2px;
+  }
+
+  .backspace {
+    margin: 0 0 0 20px;
+
+    .backspace-button {
+      border-radius: 0;
+
+    }
+  }
+  .stop,
+  .play {
+    .stop-button,
+    .play-button {
+      border-radius: 0px 10px 10px 0px;
+    }
+  }
+
+
+}
+
+.sound-is-playing {
+  _color: black !important;
+  _text-decoration: underline;
+  position: relative;
+}
+.sound-is-playing:after {
+  content: "";
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  left: calc(50% - 3px);
+  bottom: -5px;
+  border: 5px solid red;
+  border-radius: 5px;
+}
+
+.debug-controls {
+  margin-top: 10px;
+  text-align: center;
+}
+
+.tab-wrapper {
+  _border: 1px solid red;
+  margin: 10px;
+  background-color: #fff;
+}
+
+.tab-body-wrapper {
+  border: 1px solid #ddd;
+  _border-top: 1px solid red;
+  border-top: 0px;
+
+}
+.nav-item {
+  font-size: 30px;
+}
+
+
+.begin-record-wrapper {
+  text-align: center;
+  _height: 150px;
+
+  .begin-recording-button {
+    margin-top: 20px;
+    font-size: 21px;
+
+    .begin-recording-icon {
+      font-size: 21px;
+    }
+  }
+}
+
+
+.category {
+  font-size: 16px;
+  border-bottom: 1px solid #aaa;
+  margin: 10px 20px 0 12px;
+  text-transform: capitalize;
+}
+
+.category:first-child {
+  margin-top: 0px;
+}
+
+/* disable selecting text */
+.SoundButton,
+button,
+li,
+a,
+.noselect {
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Old versions of Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Edge, Opera and Firefox */
+}
