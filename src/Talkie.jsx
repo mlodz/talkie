@@ -96,13 +96,15 @@ export default function Talkie() {
     }
   };
 
-  const handleClickSound = function(alias) {
+  const handleClickSound = useCallback(function(alias) {
+    console.log('handleClickSound, alias:', alias);
     addToSequence(alias);
     fx.current.play(alias);
-  };
-  const handleClickSequenceSound = function(alias) {
+  }, [recording]);
+
+  const handleClickSequenceSound = useCallback(function(alias) {
     fx.current.play(alias);
-  };
+  }, []);
 
 
   const registerSounds = function() {
@@ -139,7 +141,7 @@ export default function Talkie() {
                  isPlaying={isPlayingSequenceIndex(i)}
                  key={`${alias}-${i}`}
                  sound={getSound(alias)}
-                 onClick={() => handleClickSequenceSound(alias)}
+                 onClick={handleClickSequenceSound}
                />
              )}
              {sequence.length > 0
@@ -206,7 +208,7 @@ export default function Talkie() {
                                 isPlaying={false}
                                 key={sound.alias}
                                 sound={sound}
-                                onClick={() => handleClickSound(sound.alias)}
+                                onClick={handleClickSound}
                               />
                             )}
                           </div>

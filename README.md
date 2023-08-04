@@ -42,3 +42,5 @@ This is a PWA (Progressive Web App). It works on the web and can be installed on
 ## Future Features
 1. Add "Favorites" functionality for sentences. Include a star icon, tapping it will save it locally. Include a star tab with the voices; this tab will list all saved sentences.
 2. Add more words.
+3. Cleanup code, memo the buttons
+3. Add more tests
