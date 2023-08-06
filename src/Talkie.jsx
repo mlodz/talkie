@@ -6,19 +6,7 @@ import SoundJsWrapper from './SoundJsWrapper';
 import SoundButton from './components/SoundButton';
 import { PlayIcon, BackspaceIcon, Icon } from './components/Icon';
 
-/*
-  MVP TODO
-  [ ] add a "stop playing" button, toggle it with play button
-  [ ] have app be full height, but scroll only the Word section
-[ ]disable zoom in
-https://www.includehelp.com/code-snippets/how-can-i-disable-zoom-on-a-mobile-web-page.aspx#:~:text=To%20disable%20zoom%20on%20a%20mobile%20webpage%2C%20you%20can%20use,to%20disable%20zoom%20on%20mobile.
-
-[ ]disable text select
-https://stackoverflow.com/questions/826782/how-to-disable-text-selection-highlighting
-
- */
-
-let defaultSequence = [];//['julia-says-julia', 'julia-says-is', 'julia-says-silly', 'julia-says-julia', 'julia-says-is', 'julia-says-silly', 'julia-says-julia', 'julia-says-is', 'julia-says-silly'];
+let defaultSequence = [];
 
 export default function Talkie() {
   let [status, setStatus] = useState('');
@@ -48,7 +36,6 @@ export default function Talkie() {
     sounds.forEach((sound, i) => {
       chain = chain.then(() => {
         setSequenceIndex(i);
-        console.log('is sequence interrupted', sequenceInterrupted.current);
         if (sequenceInterrupted.current) {
           return Promise.resolve();
         }
@@ -67,7 +54,6 @@ export default function Talkie() {
   }, [sequenceIndex, sequence]);
 
   const stopSequence = useCallback(() => {
-    console.log('stop sequence');
     sequenceInterrupted.current = true;
   });
 
@@ -80,13 +66,9 @@ export default function Talkie() {
   }, [sequence]);
   const handlePressClose = useCallback(() => {
     setRecording(false);
-    clearSequence();
+    setSequence([]);
   }, []);
 
-  const clearSequence = function() {
-    setSequence([]);
-    //setRecording(false);
-  };
   const pressRecord = function() {
     setRecording(r => !r);
   };
@@ -97,7 +79,6 @@ export default function Talkie() {
   };
 
   const handleClickSound = useCallback(function(alias) {
-    console.log('handleClickSound, alias:', alias);
     addToSequence(alias);
     fx.current.play(alias);
   }, [recording]);
@@ -116,22 +97,9 @@ export default function Talkie() {
     firstRender.current = false;
   }
 
-
-  // deprecated
-  // This always works, but on mobile has a delay
-  const playAudio = useCallback(function(audioFile) {
-    (new Audio(audioFile).play());
-    setStatus(audioFile);
-  });
-
-
-
-  console.log({ALL_SOUNDS, GROUPED_SOUNDS});
-
   return (
     <div className="Talkie">
       <h1>Talkie</h1>
-
       {recording
        ? <div className="recording-wrapper">
            <div className="recording">
@@ -181,9 +149,7 @@ export default function Talkie() {
             </button>
          </div>
       }
-
       <div className="tab-wrapper">
-
         <ul className="nav nav-tabs">
           {voices.map(voice =>
             <li
@@ -195,7 +161,6 @@ export default function Talkie() {
             </li>
           )}
         </ul>
-
         <div className="tab-body-wrapper">
           {voices.map(voice => voice.alias === selectedTab &&
                       <div className="" key={voice.alias}>
@@ -216,16 +181,11 @@ export default function Talkie() {
                       </div>
                      )}
         </div>
-
       </div>
-
       <div className="debug-controls">
         <button onClick={() => registerSounds()}>Register Sounds</button>
         <button onClick={() => window.location.reload()}>Refresh Page</button>
       </div>
-
-
-
     </div>
   );
 }
