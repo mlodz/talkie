@@ -27,10 +27,8 @@ class SoundJsWrapper {
   play(name) {
     let promise = new Promise((res, rej) => {
       let instance = window.createjs.Sound.play(name);
-      console.log('playState', instance.playState);
 
       instance.on("complete", () => {
-        console.log('instance complete', name);
         res();
       }, true);
       if (instance.playState === '') {

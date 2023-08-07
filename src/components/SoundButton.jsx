@@ -10,7 +10,6 @@ const SoundButton = memo(function({sound, isPlaying, onClick, disabled}) {
     return <div>OH NO!</div>;
   }
 
-  console.log('render button', sound.alias);
   return (
     <button
       disabled={disabled}
