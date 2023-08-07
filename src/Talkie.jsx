@@ -1,10 +1,14 @@
 import './Talkie.css';
 
 import { useRef, useState, useCallback } from 'react';
-import { sortCategories, categoryDisplay, getSound, getVoice, ALL_SOUNDS, GROUPED_SOUNDS } from './SoundData';
+import { audioHandler } from './AudioHandlerSetup';
+import CategoryData from './CategoryData';
+
 import SoundJsWrapper from './SoundJsWrapper';
 import SoundButton from './components/SoundButton';
 import { PlayIcon, BackspaceIcon, Icon } from './components/Icon';
+import { VoiceLabeler, CategoryLabeler } from './Labels';
+
 
 let defaultSequence = [];
 
@@ -19,8 +23,19 @@ export default function Talkie() {
   let firstRender = useRef(true);
   let [selectedTab, setSelectedTab] = useState('julia');
 
+  let GROUPED_SOUNDS = audioHandler.getSoundsByVoiceByCategory();
+
   let isPlayingSequence = sequenceIndex >= 0;
-  let voices = Array.from(GROUPED_SOUNDS.keys()).map(getVoice);
+  let voices = Array.from(GROUPED_SOUNDS.keys());
+  let categoryAliases = CategoryData.getSortedCategories();
+
+  console.log({
+    ALL_SOUNDS: audioHandler.getAllSounds(),
+    GROUPED_SOUNDS,
+    categoryAliases,
+  });
+
+
   let isPlayingSequenceIndex = (index) => sequenceIndex === index;
   let disableAll = isPlayingSequence;
 
@@ -29,17 +44,14 @@ export default function Talkie() {
       return;
     }
     let chain = Promise.resolve();
-    let sounds = sequence.map(alias =>
-      ALL_SOUNDS.find(s => s.alias == alias)
-    );
     let index = 0;
-    sounds.forEach((sound, i) => {
+    sequence.forEach((soundAlias, i) => {
       chain = chain.then(() => {
         setSequenceIndex(i);
         if (sequenceInterrupted.current) {
           return Promise.resolve();
         }
-        return fx.current.play(sound.alias);
+        return fx.current.play(soundAlias);
       });
     });
     chain
@@ -89,7 +101,7 @@ export default function Talkie() {
 
 
   const registerSounds = function() {
-    fx.current.registerSoundList(ALL_SOUNDS);
+    fx.current.registerSoundList(audioHandler.getAllSounds());
   };
 
   if (firstRender.current) {
@@ -108,7 +120,7 @@ export default function Talkie() {
                  disabled={isPlayingSequence}
                  isPlaying={isPlayingSequenceIndex(i)}
                  key={`${alias}-${i}`}
-                 sound={getSound(alias)}
+                 sound={audioHandler.getSound(alias)}
                  onClick={handleClickSequenceSound}
                />
              )}
@@ -151,23 +163,23 @@ export default function Talkie() {
       }
       <div className="tab-wrapper">
         <ul className="nav nav-tabs">
-          {voices.map(voice =>
+          {voices.map(voiceAlias =>
             <li
-              key={voice.alias}
-              className={"noselect nav-item "+ (voice.alias === selectedTab ? 'active' : null)}
-              onClick={() => setSelectedTab(voice.alias)}
+              key={voiceAlias}
+              className={"noselect nav-item "+ (voiceAlias === selectedTab ? 'active' : null)}
+              onClick={() => setSelectedTab(voiceAlias)}
             >
-              <a className="nav-link" aria-current="page" href="#">{voice.name}</a>
+              <a className="nav-link" aria-current="page" href="#">{VoiceLabeler.get(voiceAlias)}</a>
             </li>
           )}
         </ul>
         <div className="tab-body-wrapper">
-          {voices.map(voice => voice.alias === selectedTab &&
-                      <div className="" key={voice.alias}>
-                        {sortCategories([...GROUPED_SOUNDS.get(voice.alias).keys()]).map(categoryAlias =>
+          {voices.map(voiceAlias => voiceAlias === selectedTab &&
+                      <div className="" key={voiceAlias}>
+                        {categoryAliases.map(categoryAlias => GROUPED_SOUNDS.get(voiceAlias).get(categoryAlias) && GROUPED_SOUNDS.get(voiceAlias).get(categoryAlias).length > 0 &&
                           <div key={categoryAlias}>
-                            <h3 className="category">{categoryDisplay(categoryAlias)}</h3>
-                            {GROUPED_SOUNDS.get(voice.alias).get(categoryAlias).map(sound =>
+                            <h3 className="category">{CategoryLabeler.get(categoryAlias)}</h3>
+                            {GROUPED_SOUNDS.get(voiceAlias).get(categoryAlias).map(sound =>
                               <SoundButton
                                 disabled={isPlayingSequence}
                                 isPlaying={false}
