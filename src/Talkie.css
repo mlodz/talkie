@@ -4,6 +4,7 @@
 
 body {
   color: #354390;
+  _font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
 }
 .Talkie {
   padding: 10px;

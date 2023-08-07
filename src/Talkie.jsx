@@ -1,4 +1,4 @@
-import './style.css';
+import './Talkie.css';
 
 import { useRef, useState, useCallback } from 'react';
 import { sortCategories, categoryDisplay, getSound, getVoice, ALL_SOUNDS, GROUPED_SOUNDS, JULIA_SOUNDS, STEVE_SOUNDS, BY_CATEGORY } from './SoundData';
