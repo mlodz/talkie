@@ -1,7 +1,7 @@
 import './Talkie.css';
 
 import { useRef, useState, useCallback } from 'react';
-import { sortCategories, categoryDisplay, getSound, getVoice, ALL_SOUNDS, GROUPED_SOUNDS, JULIA_SOUNDS, STEVE_SOUNDS, BY_CATEGORY } from './SoundData';
+import { sortCategories, categoryDisplay, getSound, getVoice, ALL_SOUNDS, GROUPED_SOUNDS } from './SoundData';
 import SoundJsWrapper from './SoundJsWrapper';
 import SoundButton from './components/SoundButton';
 import { PlayIcon, BackspaceIcon, Icon } from './components/Icon';

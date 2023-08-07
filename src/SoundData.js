@@ -1,8 +1,23 @@
 // return a map of all audio file paths
 function importAll(r) {
-  console.log('importAll', r);
+  let keys = r.keys();
+  console.log('r', keys, r(keys[0]));
+
+  // r is like a map
+  // example:
+  // r.keys() is list of:
+  //    './julia_says_a.m4a'
+  // and r(key) is like:
+  //    /static/media/julia_says_a.6efe9d2bfced9dfd8c46.m4a
+
   let sounds = {};
   r.keys().map((item, index) => { sounds[item.replace('./', '')] = r(item); });
+
+  // Name this type an AssetMapper
+  // return is map, like:
+  // julia_says_a.m4a
+  //    -> /static/media/julia_says_a.6efe9d2bfced9dfd8c46.m4a
+
   return sounds;
 }
 const allSoundPaths = importAll(require.context('./assets/audio', false, /\.(png|jpe?g|m4a)$/));
@@ -60,18 +75,8 @@ const wordDisplay = word => {
   }
 };
 
-// allSoundPaths, object of
-// file name -> web accessible asset path
-// ex.
-// steve_says_hungry.m4a -> public/assets/12341324.steve_says.m4a
-
-const path = function(voice, word) {
-  let key = `${voice}_says_${word}.m4a`;
-  return allSoundPaths[key];
-}
-
-let words = new Set([]);
-let voices = new Set([]);
+//let words = new Set([]);
+//let voices = new Set([]);
 let ALL_SOUNDS = [];
 
 let pathRegex = /(\w+)_says_(\w+)/;
@@ -81,8 +86,8 @@ Object.keys(allSoundPaths).forEach(path => {
   if (matches) {
     let voice = matches[1];
     let word = matches[2];
-    words.add(voice);
-    voices.add(word);
+    //words.add(voice);
+    //voices.add(word);
     ALL_SOUNDS.push({
       voice: voice,
       name: wordDisplay(word),
@@ -93,7 +98,6 @@ Object.keys(allSoundPaths).forEach(path => {
   }
 });
 
-console.log({words, voices});
 const groupBy = function(items, grouper) {
   let result = new Map();
   items.forEach(item => {
@@ -119,13 +123,6 @@ for (let [voice, sounds] of GROUPED_SOUNDS.entries()) {
 }
 
 
-
-/*
-const groupByVoice = function(allSounds) {
-  return groupBy(allSounds, sound => sound.voice);
-}
-*/
-//let SOUNDS_BY_VOICE = groupByVoice(ALL_SOUNDS);
 
 function wordToCategory(word) {
   for (let [catAlias, wordSet] of CATEGORIES.entries()) {
@@ -158,12 +155,47 @@ const VOICES = {
 const JULIA_SOUNDS = ALL_SOUNDS.filter(s => s.voice === 'julia');
 const STEVE_SOUNDS = ALL_SOUNDS.filter(s => s.voice === 'steve');
 
+/* TODO
+// API
+class AudioHandler {
+  getVoiceList() // for tabs
+
+  // returns list of sounds
+  // replaces sortCategories
+  // replaces voice stuff
+  // replaces categoryDisplay
+  // replaces getSound
+  // replaces getVoice
+  getSoundsByVoiceByCategory(voiceAlias, categoryAlias)
+
+  getSound(soundAlias) // returns full sound
+
+  registerAllSounds() // do in constructor instead?
+  playSound()
+
+}
+
+// AudioImporter reads filenames in dir, parses, returns ALL_SOUNDS
+AudioImporter
+AudioImporter.import(options) //
+AudioImporter.getSounds() // return ALL_SOUNDS
+
+// AudioPlayer is the wrapper around soundjs
+Mostly just rename SoundJsWrapper to AudioPlayer
+
+// Do dependency injection; pass AudioImporter and AudioPlayer into AudioHandler
+
+
+CagegoriesStatic
+.wordToCategory(word)
+.sortCategories() // sort given list of category aliases
+
+*/
+
 
 export {
   ALL_SOUNDS,
   GROUPED_SOUNDS,
-  STEVE_SOUNDS,
-  JULIA_SOUNDS,
   getSound,
   getVoice,
   categoryDisplay,
