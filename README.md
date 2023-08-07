@@ -40,8 +40,8 @@ This is a PWA (Progressive Web App). It works on the web and can be installed on
 2. Sounds sometimes unregister. Reproduce: on iphone, on installed PWA, open the app. Click sounds, they work. Then switch away from app. Switch back to app. Click a sound, it does not play.
 
 ## Future Work
-[ ] Add "Favorites" functionality for sentences. Include a star icon, tapping it will save it locally. Include a star tab with the voices; this tab will list all saved sentences.
-[ ] Add more words (audio).
-[x] Refactor SoundData into testable components
-[ ] Refactor jsx inside Talkie to be smaller components, easier to test
-[ ] Add more tests
+- [ ] Add "Favorites" functionality for sentences. Include a star icon, tapping it will save it locally. Include a star tab with the voices; this tab will list all saved sentences.
+- [ ] Add more words (audio).
+- [x] Refactor SoundData into testable components
+- [ ] Refactor jsx inside Talkie to be smaller components, easier to test
+- [ ] Add more tests
