@@ -45,3 +45,4 @@ This is a PWA (Progressive Web App). It works on the web and can be installed on
 - [x] Refactor SoundData into testable components
 - [ ] Refactor jsx inside Talkie to be smaller components, easier to test
 - [ ] Add more tests
+
