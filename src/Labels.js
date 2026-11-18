@@ -17,6 +17,8 @@ const CategoryLabeler = LabelFactory(
 const WordLabeler = LabelFactory(
   {
     'thankyou': 'Thank You',
+    'fourthofjuly': 'Fourth of July',
+    'horseyday': 'Horsey Day',
   },
   word => word
 );
@@ -26,6 +28,7 @@ const VoiceLabeler = LabelFactory(
     'steve': 'Daddy',
     'julia': 'Julia',
     'stella': 'Stella',
+    'lea': 'Lea',
   },
   voice => voice
 );
