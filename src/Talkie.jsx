@@ -76,6 +76,10 @@ export default function Talkie() {
       return newSequence;
     });
   }, [sequence]);
+  const handleClearSentence = useCallback(() => {
+    setSequence([]);
+  }, []);
+
   const handlePressClose = useCallback(() => {
     setRecording(false);
     setSequence([]);
@@ -141,6 +145,12 @@ export default function Talkie() {
              onClick={() => handlePressClose()}>
              <Icon type="x-circle" className="exit-button" /> Close
            </button>
+           <button
+             className="clear-sentence"
+             disabled={disableAll || sequence.length === 0}
+             onClick={() => handleClearSentence()}>
+             <Icon type="trash" className="clear-sentence-button" /> Clear
+           </button>
 
            {sequence.length > 0 &&
             (
@@ -157,7 +167,7 @@ export default function Talkie() {
          </div>
        :  <div className="begin-record-wrapper item">
             <button className="begin-recording-button" onClick={() => pressRecord()}>
-              <Icon type="chat-left-fill" className="begin-recording-button" /> Begin Recording
+              <Icon type="chat-left-fill" className="begin-recording-button" /> Begin Sentence
             </button>
          </div>
       }

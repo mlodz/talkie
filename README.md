@@ -15,7 +15,7 @@ This is a PWA (Progressive Web App). It works on the web and can be installed on
 1. Click a voice (Julia, Stella, etc).
 2. There is a list of words. Click a word to hear that voice say it.
 3. Record a sentence:
-4. Tab "Begin Recording"
+4. Tab "Begin Sentence"
 5. Tap words, you'll see the sentence being built.
 6. Tab "Play" and you'll hear the sentence you built!
 

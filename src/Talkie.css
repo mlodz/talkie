@@ -63,18 +63,21 @@ h1 {
     .play,
     .stop {
     }
-    .exit {
+    .exit,
+    .clear-sentence {
       float: right;
     }
   }
 
   .backspace,
   .exit,
+  .clear-sentence,
   .stop,
   .play {
     font-size: 20px;
   }
-  .exit {
+  .exit,
+  .clear-sentence {
     border: 0px;
     background-color: white;
     margin: 2px;
