@@ -308,10 +308,6 @@ export default function Talkie() {
           }
         </div>
       </div>
-      <div className="debug-controls">
-        <button onClick={() => registerSounds()}>Register Sounds</button>
-        <button onClick={() => window.location.reload()}>Refresh Page</button>
-      </div>
     </div>
   );
 }
