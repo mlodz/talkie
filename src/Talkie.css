@@ -197,9 +197,16 @@ body {
 
 .sound-is-playing {
   position: relative;
-  z-index: 1;
-  transform: scale(1.08);
-  box-shadow: 0 3px 0 var(--voice-edge), 0 0 0 4px #fff, 0 0 0 7px var(--voice-edge);
+}
+.sound-is-playing:after {
+  content: "";
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  left: calc(50% - 3px);
+  bottom: -5px;
+  border: 5px solid red;
+  border-radius: 5px;
 }
 
 .debug-controls {
