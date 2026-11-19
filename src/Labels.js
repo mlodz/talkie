@@ -11,16 +11,18 @@ const CategoryLabeler = LabelFactory(
   {
     'default': 'Other',
     'adj': 'Adjectives',
+    'little': 'Little words',
   },
   categoryAlias => categoryAlias
 );
 const WordLabeler = LabelFactory(
   {
     'thankyou': 'Thank You',
-    'fourthofjuly': 'Fourth of July',
+    'fourthofjuly': '4th of July',
+    'busybee': 'Busy Bee',
     'horseyday': 'Horsey Day',
   },
-  word => word
+  word => word.charAt(0).toUpperCase() + word.slice(1)
 );
 
 const VoiceLabeler = LabelFactory(

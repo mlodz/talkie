@@ -4,6 +4,9 @@
   --quiet-fill-color: #eceffb;
   --quiet-edge-color: #c9cfee;
   --sentence-border-color: #8f99d1;
+  --star-fill: #ffe9a3;
+  --star-edge: #e0b400;
+  --star-tint: #fff9e0;
   --voice-fill: #e6e8f5;
   --voice-edge: #b8bede;
   --voice-tint: #f6f7fc;
@@ -29,6 +32,11 @@
   --voice-fill: #b5e4fb;
   --voice-edge: #4aa3d8;
   --voice-tint: #eef8fe;
+}
+.starred {
+  --voice-fill: var(--star-fill);
+  --voice-edge: var(--star-edge);
+  --voice-tint: var(--star-tint);
 }
 
 body {
@@ -59,7 +67,6 @@ body {
   border: 0;
   border-radius: 14px;
   box-shadow: 0 3px 0 var(--voice-edge);
-  text-transform: capitalize;
   transition: transform 0.1s;
 }
 .SoundButton:active:not([disabled]) {
@@ -104,8 +111,9 @@ body {
 
   .exit,
   .clear-sentence {
-    padding: 6px 10px;
+    padding: 6px 6px;
     border: 0;
+    font-size: 17px;
     background-color: transparent;
     color: var(--main-text-color);
     font-weight: 700;
@@ -126,7 +134,7 @@ body {
 
   .stop,
   .play {
-    padding: 6px 22px;
+    padding: 6px 18px;
     border: 3px solid var(--main-text-color);
     border-radius: 999px;
     font-weight: 800;
@@ -138,6 +146,26 @@ body {
   .stop {
     background-color: #fff;
     color: var(--main-text-color);
+  }
+
+  .star-sentence {
+    width: 44px;
+    height: 44px;
+    margin-left: 6px;
+    padding: 0;
+    border: 3px solid var(--star-edge);
+    border-radius: 50%;
+    background-color: #fff;
+    color: var(--star-edge);
+    font-size: 22px;
+    line-height: 1;
+    vertical-align: top;
+  }
+  .star-sentence[aria-pressed="true"] {
+    background-color: var(--star-fill);
+  }
+  .star-sentence[disabled] {
+    opacity: 0.35;
   }
 }
 
@@ -164,6 +192,7 @@ body {
   list-style: none;
 }
 .voice-tab {
+  display: flex;
   flex: 1;
   min-width: 0;
   margin-right: 6px;
@@ -174,14 +203,17 @@ body {
 .voice-tabs a,
 .voice-tabs a:hover,
 .voice-tabs a:focus {
-  display: block;
-  padding: 10px 4px 8px;
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 2px 8px;
   border: 3px solid var(--voice-fill);
   border-bottom: 0;
   border-radius: 16px 16px 0 0;
   background-color: #fff;
   color: var(--main-text-color);
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 800;
   text-align: center;
   text-decoration: none;
@@ -198,9 +230,24 @@ body {
   border-color: var(--voice-edge);
   background-color: var(--voice-tint);
 }
+.voice-tab.starred {
+  flex: 0 0 56px;
+}
+.voice-tab.starred a {
+  font-size: 20px;
+  color: var(--star-edge);
+}
 @media (max-width: 360px) {
   .voice-tabs a {
-    font-size: 15px;
+    font-size: 14px;
+  }
+  .recording-wrapper .button-label {
+    display: none;
+  }
+}
+@media (min-width: 600px) {
+  .voice-tabs a {
+    font-size: 20px;
   }
 }
 
@@ -228,6 +275,74 @@ body {
 
 .category-group {
   margin-bottom: 18px;
+}
+
+.starred-empty {
+  margin: 0 0 18px;
+  font-size: 18px;
+  color: var(--quiet-text-color);
+}
+
+.starred-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.starred-row {
+  padding-bottom: 6px;
+  margin-bottom: 14px;
+  border-bottom: 2px solid var(--star-fill);
+}
+.starred-row:last-child {
+  border-bottom: 0;
+  margin-bottom: 0;
+}
+.starred-row .SoundButton {
+  margin-bottom: 10px;
+  font-size: 16px;
+}
+.starred-actions {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+}
+.starred-play {
+  padding: 6px 20px;
+  border: 3px solid var(--main-text-color);
+  border-radius: 999px;
+  background-color: var(--main-text-color);
+  color: #fff;
+  font-size: 18px;
+  font-weight: 800;
+}
+.starred-stop {
+  padding: 6px 20px;
+  border: 3px solid var(--main-text-color);
+  border-radius: 999px;
+  background-color: #fff;
+  color: var(--main-text-color);
+  font-size: 18px;
+  font-weight: 800;
+}
+.starred-edit,
+.starred-remove {
+  margin-left: 8px;
+  padding: 6px 12px;
+  border: 0;
+  border-radius: 999px;
+  background-color: transparent;
+  color: var(--quiet-text-color);
+  font-size: 18px;
+  font-weight: 700;
+}
+.starred-remove.confirming {
+  background-color: #ffe3e3;
+  color: #b3261e;
+}
+.starred-play[disabled],
+.starred-edit[disabled],
+.starred-remove[disabled] {
+  opacity: 0.35;
 }
 
 .category {

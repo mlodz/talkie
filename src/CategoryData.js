@@ -5,7 +5,13 @@ const CATEGORIES = {
     order: 10,
     words: new Set([
       'julia', 'stella', 'lea', 'newton', 'mommy', 'daddy', 'minimo',
-      'busybee', 'mario', 'yoshi', 'blippi',
+      'busybee', 'mario', 'yoshi', 'blippi', 'bluey', 'boston', 'canva',
+    ]),
+  },
+  'little': {
+    order: 15,
+    words: new Set([
+      'a', 'an', 'the', 'and', 'but', 'to', 'my', 'no', 'not',
     ]),
   },
   'adj': {
@@ -13,7 +19,7 @@ const CATEGORIES = {
     words: new Set([
       'silly', 'hungry', 'adventurous', 'athletic', 'cranky',
       'curious', 'delicious', 'happy', 'mean', 'nice', 'poopy',
-      'sad', 'tasty', 'wonderful', 'yummy',
+      'sad', 'tasty', 'wonderful', 'yummy', 'favorite',
     ]),
   },
   'colors': {
@@ -27,6 +33,30 @@ const CATEGORIES = {
     words: new Set([
       'is', 'are', 'can', 'eat', 'have', 'play', 'take', 'with',
       'hide'
+    ]),
+  },
+  'food': {
+    order: 50,
+    words: new Set([
+      'pizza', 'hamburger', 'broccoli', 'beans', 'candy', 'turkey',
+    ]),
+  },
+  'animals': {
+    order: 60,
+    words: new Set([
+      'axolotl', 'elephant', 'piggy',
+    ]),
+  },
+  'holidays': {
+    order: 70,
+    words: new Set([
+      'christmas', 'easter', 'halloween', 'fourthofjuly', 'horseyday',
+    ]),
+  },
+  'seasons': {
+    order: 80,
+    words: new Set([
+      'spring', 'summer', 'autumn', 'winter',
     ]),
   },
   [DEFAULT_CATEGORY_ALIAS]: {

@@ -15,7 +15,7 @@ const SoundButton = memo(function({sound, isPlaying, onClick, disabled}) {
       disabled={disabled}
       className={klasses.join(' ')}
       onClick={() => onClick(sound.alias)}>
-      {sound.name}
+      {sound.wordDisplay}
     </button>);
 });
 

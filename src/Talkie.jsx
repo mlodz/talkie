@@ -6,23 +6,38 @@ import CategoryData from './CategoryData';
 
 import SoundJsWrapper from './SoundJsWrapper';
 import SoundButton from './components/SoundButton';
+import StarredList from './components/StarredList';
 import { PlayIcon, BackspaceIcon, Icon } from './components/Icon';
 import { VoiceLabeler, CategoryLabeler, sortVoices } from './Labels';
+import {
+  browserStorage,
+  isStarred,
+  loadStarred,
+  removeStarred,
+  saveStarred,
+  sentenceKey,
+  toggleStarred,
+} from './StarredSentences';
 import { ReactComponent as Logo } from './assets/talkie-logo.svg';
 
 
 let defaultSequence = [];
+const STARRED_TAB = 'starred';
 
 export default function Talkie() {
   let [status, setStatus] = useState('');
   let [recording, setRecording] = useState(false);
   let [sequence, setSequence] = useState(defaultSequence);
   let [sequenceIndex, setSequenceIndex] = useState(-1);
+  let [playingStarredKey, setPlayingStarredKey] = useState(null);
   let sequenceInterrupted = useRef(false);
   let fx = useRef(new SoundJsWrapper());
   window.fx = fx;
   let firstRender = useRef(true);
   let [selectedTab, setSelectedTab] = useState('julia');
+  let [starred, setStarred] = useState(() =>
+    loadStarred(browserStorage(), alias => Boolean(audioHandler.getSound(alias)))
+  );
 
   let GROUPED_SOUNDS = audioHandler.getSoundsByVoiceByCategory();
 
@@ -37,16 +52,17 @@ export default function Talkie() {
   });
 
 
-  let isPlayingSequenceIndex = (index) => sequenceIndex === index;
+  let isPlayingSequenceIndex = (index) => playingStarredKey === null && sequenceIndex === index;
   let disableAll = isPlayingSequence;
+  let currentSentenceIsStarred = isStarred(starred, sequence);
 
-  const playSequence = useCallback(() => {
+  const playAliases = useCallback((aliases) => {
     if (disableAll) {
       return;
     }
     let chain = Promise.resolve();
     let index = 0;
-    sequence.forEach((soundAlias, i) => {
+    aliases.forEach((soundAlias, i) => {
       chain = chain.then(() => {
         setSequenceIndex(i);
         if (sequenceInterrupted.current) {
@@ -58,13 +74,18 @@ export default function Talkie() {
     chain
       .then(() => {
         setSequenceIndex(-1);
+        setPlayingStarredKey(null);
         sequenceInterrupted.current = false;
       })
       .catch(e => {
         console.error(e);
       });
     ;
-  }, [sequenceIndex, sequence]);
+  }, [sequenceIndex]);
+
+  const playSequence = useCallback(() => {
+    playAliases(sequence);
+  }, [playAliases, sequence]);
 
   const stopSequence = useCallback(() => {
     sequenceInterrupted.current = true;
@@ -85,6 +106,39 @@ export default function Talkie() {
     setRecording(false);
     setSequence([]);
   }, []);
+
+  const changeStarred = (nextStarred) => {
+    setStarred(nextStarred);
+    saveStarred(browserStorage(), nextStarred);
+  };
+
+  const handleToggleStar = () => {
+    changeStarred(toggleStarred(starred, sequence));
+  };
+
+  const handleRemoveStarred = (aliases) => {
+    changeStarred(removeStarred(starred, aliases));
+  };
+
+  const handlePlayStarred = (aliases) => {
+    if (disableAll) {
+      return;
+    }
+    setPlayingStarredKey(sentenceKey(aliases));
+    playAliases(aliases);
+  };
+
+  // Lands on the last word's voice tab so the kid can keep adding words in that voice.
+  const handleEditStarred = (aliases) => {
+    if (disableAll) {
+      return;
+    }
+    let lastWord = audioHandler.getSound(aliases[aliases.length - 1]);
+    setRecording(true);
+    setSequence([...aliases]);
+    setSelectedTab(lastWord ? lastWord.voice : voices[0]);
+    window.scrollTo(0, 0);
+  };
 
   const pressRecord = function() {
     setRecording(r => !r);
@@ -142,15 +196,17 @@ export default function Talkie() {
            <div className="recording-buttons">
            <button
              className="exit"
+             aria-label="Close"
              disabled={disableAll}
              onClick={() => handlePressClose()}>
-             <Icon type="x-circle" className="exit-button" /> Close
+             <Icon type="x-circle" className="exit-button" /> <span className="button-label">Close</span>
            </button>
            <button
              className="clear-sentence"
+             aria-label="Clear"
              disabled={disableAll || sequence.length === 0}
              onClick={() => handleClearSentence()}>
-             <Icon type="trash" className="clear-sentence-button" /> Clear
+             <Icon type="trash" className="clear-sentence-button" /> <span className="button-label">Clear</span>
            </button>
 
            {sequence.length > 0 &&
@@ -163,6 +219,16 @@ export default function Talkie() {
             <Icon type="sign-stop-fill" className="stop-button"/> Stop
           </button>
             )
+           }
+           {sequence.length > 0 &&
+            <button
+              className="star-sentence"
+              aria-label={currentSentenceIsStarred ? 'Remove star from sentence' : 'Star sentence'}
+              aria-pressed={currentSentenceIsStarred}
+              disabled={disableAll}
+              onClick={() => handleToggleStar()}>
+              <Icon type={currentSentenceIsStarred ? 'star-fill' : 'star'} className="star-sentence-icon" />
+            </button>
            }
            </div>
          </div>
@@ -183,6 +249,12 @@ export default function Talkie() {
               <a aria-current="page" href="#">{VoiceLabeler.get(voiceAlias)}</a>
             </li>
           )}
+          <li
+            className={`noselect voice-tab ${STARRED_TAB}${selectedTab === STARRED_TAB ? ' active' : ''}`}
+            onClick={() => setSelectedTab(STARRED_TAB)}
+          >
+            <a aria-label="Starred sentences" href="#"><Icon type="star-fill" /></a>
+          </li>
         </ul>
         <div className={`tab-body-wrapper ${selectedTab}`}>
           {voices.map(voiceAlias => voiceAlias === selectedTab &&
@@ -203,6 +275,20 @@ export default function Talkie() {
                         )}
                       </div>
                      )}
+          {selectedTab === STARRED_TAB &&
+           <StarredList
+             starred={starred}
+             getSound={audioHandler.getSound.bind(audioHandler)}
+             disabled={isPlayingSequence}
+             playingKey={playingStarredKey}
+             playingIndex={sequenceIndex}
+             onPlay={handlePlayStarred}
+             onStop={stopSequence}
+             onEdit={handleEditStarred}
+             onPlayWord={handleClickSequenceSound}
+             onRemove={handleRemoveStarred}
+           />
+          }
         </div>
       </div>
       <div className="debug-controls">
