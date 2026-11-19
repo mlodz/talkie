@@ -30,6 +30,7 @@ export default function Talkie() {
   let [sequence, setSequence] = useState(defaultSequence);
   let [sequenceIndex, setSequenceIndex] = useState(-1);
   let [playingStarredKey, setPlayingStarredKey] = useState(null);
+  let [logoBounceCount, setLogoBounceCount] = useState(0);
   let sequenceInterrupted = useRef(false);
   let fx = useRef(new SoundJsWrapper());
   window.fx = fx;
@@ -140,6 +141,16 @@ export default function Talkie() {
     window.scrollTo(0, 0);
   };
 
+  const handleClickLogo = () => {
+    setLogoBounceCount(count => count + 1);
+    if (isPlayingSequence) {
+      return;
+    }
+    let sounds = audioHandler.getAllSounds();
+    let randomSound = sounds[Math.floor(Math.random() * sounds.length)];
+    fx.current.play(randomSound.alias);
+  };
+
   const pressRecord = function() {
     setRecording(r => !r);
   };
@@ -170,7 +181,13 @@ export default function Talkie() {
 
   return (
     <div className="Talkie">
-      <h1 className="logo"><Logo role="img" aria-label="Talkie" /></h1>
+      <h1 className="logo">
+        <button className="logo-button" aria-label="Talkie, say a random word" onClick={handleClickLogo}>
+          <span key={logoBounceCount} className={logoBounceCount > 0 ? 'logo-bounce' : ''}>
+            <Logo role="img" aria-hidden="true" />
+          </span>
+        </button>
+      </h1>
       {recording
        ? <div className="recording-wrapper">
            <div className="recording">

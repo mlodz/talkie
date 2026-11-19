@@ -53,8 +53,34 @@ body {
 }
 .logo svg {
   width: 240px;
-  max-width: 70%;
+  max-width: 100%;
   height: auto;
+}
+.logo-button {
+  display: block;
+  width: 240px;
+  max-width: 70%;
+  margin: 0 auto;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  outline: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+.logo-button span {
+  display: block;
+}
+.logo-bounce {
+  transform-origin: 50% 100%;
+  animation: logo-bounce 0.7s ease-out;
+}
+@keyframes logo-bounce {
+  0%   { transform: translateY(0) scale(1, 1); }
+  15%  { transform: translateY(0) scale(1.1, 0.85); }
+  40%  { transform: translateY(-22px) scale(0.95, 1.08); }
+  65%  { transform: translateY(0) scale(1.06, 0.92); }
+  82%  { transform: translateY(-6px) scale(1, 1); }
+  100% { transform: translateY(0) scale(1, 1); }
 }
 
 .SoundButton {
