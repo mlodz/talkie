@@ -1,5 +1,9 @@
 const STORAGE_KEY = 'talkie.starred.v1';
 
+const DEFAULT_STARRED = [
+  {aliases: ['julia-says-mommy', 'julia-says-is', 'julia-says-wonderful'], savedAt: 0},
+];
+
 function sentenceKey(aliases) {
   return aliases.join('|');
 }
@@ -67,14 +71,17 @@ function browserStorage() {
   }
 }
 
+function defaultStarred(isKnownAlias) {
+  return parseStarred(JSON.stringify(DEFAULT_STARRED), isKnownAlias);
+}
+
+// Only a never-saved list gets the defaults; a list the user emptied is stored as "[]" and stays empty.
 function loadStarred(storage, isKnownAlias) {
-  if (!storage) {
-    return [];
-  }
   try {
-    return parseStarred(storage.getItem(STORAGE_KEY), isKnownAlias);
+    const rawJson = storage && storage.getItem(STORAGE_KEY);
+    return rawJson ? parseStarred(rawJson, isKnownAlias) : defaultStarred(isKnownAlias);
   } catch (e) {
-    return [];
+    return defaultStarred(isKnownAlias);
   }
 }
 

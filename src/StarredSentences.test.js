@@ -9,12 +9,16 @@ import {
   toggleStarred,
 } from './StarredSentences';
 
-const KNOWN_ALIASES = ['julia-says-daddy', 'julia-says-is', 'lea-says-happy', 'lea-says-pizza'];
+const KNOWN_ALIASES = [
+  'julia-says-daddy', 'julia-says-is', 'lea-says-happy', 'lea-says-pizza',
+  'julia-says-mommy', 'julia-says-wonderful',
+];
 const isKnownAlias = alias => KNOWN_ALIASES.includes(alias);
 
 const aSentence = (aliases, savedAt = 1) => ({aliases, savedAt});
 const DADDY_IS_HAPPY = ['julia-says-daddy', 'julia-says-is', 'lea-says-happy'];
 const PIZZA = ['lea-says-pizza'];
+const MOMMY_IS_WONDERFUL = ['julia-says-mommy', 'julia-says-is', 'julia-says-wonderful'];
 
 function aFakeStorage(initial = {}) {
   const items = {...initial};
@@ -118,12 +122,35 @@ describe('loadStarred and saveStarred', () => {
     expect(JSON.parse(storage.getItem(STORAGE_KEY))).toEqual([aSentence(PIZZA)]);
   });
 
-  test('loads an empty list when storage is missing', () => {
-    expect(loadStarred(null, isKnownAlias)).toEqual([]);
+  test('starts with the default sentence when nothing has been saved', () => {
+    expect(loadStarred(aFakeStorage(), isKnownAlias)).toEqual([aSentence(MOMMY_IS_WONDERFUL, 0)]);
   });
 
-  test('loads an empty list when reading throws', () => {
-    expect(loadStarred(aThrowingStorage(), isKnownAlias)).toEqual([]);
+  test('keeps the list empty once the user has removed everything', () => {
+    const storage = aFakeStorage();
+
+    saveStarred(storage, []);
+
+    expect(loadStarred(storage, isKnownAlias)).toEqual([]);
+  });
+
+  test('keeps the saved list without adding the default', () => {
+    const storage = aFakeStorage();
+
+    saveStarred(storage, [aSentence(PIZZA)]);
+
+    expect(loadStarred(storage, isKnownAlias)).toEqual([aSentence(PIZZA)]);
+  });
+
+  test('falls back to the default sentence when storage is missing or reading throws', () => {
+    const defaults = [aSentence(MOMMY_IS_WONDERFUL, 0)];
+
+    expect(loadStarred(null, isKnownAlias)).toEqual(defaults);
+    expect(loadStarred(aThrowingStorage(), isKnownAlias)).toEqual(defaults);
+  });
+
+  test('leaves out the default sentence when its words no longer exist', () => {
+    expect(loadStarred(aFakeStorage(), () => false)).toEqual([]);
   });
 
   test('does not throw when writing fails', () => {
