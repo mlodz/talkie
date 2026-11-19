@@ -7,7 +7,8 @@ import CategoryData from './CategoryData';
 import SoundJsWrapper from './SoundJsWrapper';
 import SoundButton from './components/SoundButton';
 import { PlayIcon, BackspaceIcon, Icon } from './components/Icon';
-import { VoiceLabeler, CategoryLabeler } from './Labels';
+import { VoiceLabeler, CategoryLabeler, sortVoices } from './Labels';
+import { ReactComponent as Logo } from './assets/talkie-logo.svg';
 
 
 let defaultSequence = [];
@@ -26,7 +27,7 @@ export default function Talkie() {
   let GROUPED_SOUNDS = audioHandler.getSoundsByVoiceByCategory();
 
   let isPlayingSequence = sequenceIndex >= 0;
-  let voices = Array.from(GROUPED_SOUNDS.keys());
+  let voices = sortVoices(Array.from(GROUPED_SOUNDS.keys()));
   let categoryAliases = CategoryData.getSortedCategories();
 
   console.log({
@@ -115,7 +116,7 @@ export default function Talkie() {
 
   return (
     <div className="Talkie">
-      <h1>Talkie</h1>
+      <h1 className="logo"><Logo role="img" aria-label="Talkie" /></h1>
       {recording
        ? <div className="recording-wrapper">
            <div className="recording">
@@ -172,22 +173,22 @@ export default function Talkie() {
          </div>
       }
       <div className="tab-wrapper">
-        <ul className="nav nav-tabs">
+        <ul className="voice-tabs">
           {voices.map(voiceAlias =>
             <li
               key={voiceAlias}
-              className={"noselect nav-item "+ (voiceAlias === selectedTab ? 'active' : null)}
+              className={`noselect voice-tab ${voiceAlias}${voiceAlias === selectedTab ? ' active' : ''}`}
               onClick={() => setSelectedTab(voiceAlias)}
             >
-              <a className="nav-link" aria-current="page" href="#">{VoiceLabeler.get(voiceAlias)}</a>
+              <a aria-current="page" href="#">{VoiceLabeler.get(voiceAlias)}</a>
             </li>
           )}
         </ul>
-        <div className="tab-body-wrapper">
+        <div className={`tab-body-wrapper ${selectedTab}`}>
           {voices.map(voiceAlias => voiceAlias === selectedTab &&
                       <div className="" key={voiceAlias}>
                         {categoryAliases.map(categoryAlias => GROUPED_SOUNDS.get(voiceAlias).get(categoryAlias) && GROUPED_SOUNDS.get(voiceAlias).get(categoryAlias).length > 0 &&
-                          <div key={categoryAlias}>
+                          <div className="category-group" key={categoryAlias}>
                             <h3 className="category">{CategoryLabeler.get(categoryAlias)}</h3>
                             {GROUPED_SOUNDS.get(voiceAlias).get(categoryAlias).map(sound =>
                               <SoundButton
